@@ -7,7 +7,7 @@ jdk:
 
 addons:
   sonarcloud:
-    organization: "iwakoshi"
+    organization: "iwakoshi-github"
     token:
       secure: $SONAR_TOKEN
       
@@ -18,7 +18,7 @@ cache:
 
 script:
  - mvn -B -V clean
- - mvn -B -V build
+ - mvn -B -V compile
  - mvn -B -V org.jacoco:jacoco-maven-plugin:prepare-agent test  # JaCoCo is used to have code coverage, the agent has to be activated
  - mvn -B -V sonar:sonar
  - mvn -B -V install -DskipTests=true -Dmaven.javadoc.skip=true
