@@ -12,17 +12,21 @@
  */
 package br.com.iwakoshi.cinemaapi.service.movie;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import br.com.iwakoshi.cinemaapi.BuilderMovie;
-import br.com.iwakoshi.cinemaapi.MockitoExtension;
 import br.com.iwakoshi.cinemaapi.model.entity.movie.Movie;
 import br.com.iwakoshi.cinemaapi.model.repository.movie.MovieRepository;
 
@@ -35,70 +39,68 @@ import br.com.iwakoshi.cinemaapi.model.repository.movie.MovieRepository;
 @ExtendWith(MockitoExtension.class)
 class MovieServiceTest {
 
-  @Mock
-  private MovieRepository movieRepository;
+	@Mock
+	private MovieRepository movieRepository;
 
-  @InjectMocks
-  private MovieService movieService;
+	@InjectMocks
+	private MovieService movieService;
 
-  /**
-   * Test method for
-   * {@link br.com.iwakoshi.cinemaapi.service.movie.MovieService#getMoviesComingSoonByPagination(int, int)}.
-   */
-  @Test
-  void testGetMoviesComingSoonByPagination() {
-    // Arrange
-    Mockito.when(movieService.getMoviesComingSoonByPagination(0, 30))
-        .thenReturn(BuilderMovie.createMovies());
+	/**
+	 * Test method for
+	 * {@link br.com.iwakoshi.cinemaapi.service.movie.MovieService#getMoviesComingSoonByPagination(int, int)}.
+	 */
+	@Test
+	void testGetMoviesComingSoonByPagination() {
+		// Arrange
+		when(movieService.getMoviesComingSoonByPagination(0, 30)).thenReturn(BuilderMovie.createMovies());
 
-    // Act
-    List<Movie> listMovies = movieService.getMoviesComingSoonByPagination(0, 30);
+		// Act
+		List<Movie> listMovies = movieService.getMoviesComingSoonByPagination(0, 30);
 
-    // Then
-    Assertions.assertEquals(2, listMovies.size());
-    Movie movie = listMovies.get(0);
-    Assertions.assertEquals(1999, movie.getProductionYear());
-    Assertions.assertEquals(1L, movie.getId().longValue());
-    Assertions.assertEquals(120, movie.getRuntime().intValue());
-    Assertions.assertEquals("4:3", movie.getAspectRatio());
-    Assertions.assertEquals(new BigDecimal(100), movie.getBudget());
-    Assertions.assertEquals(1, movie.getCertificate().getId().intValue());
-    Assertions.assertEquals("BR", movie.getCertificate().getCountry().getCode());
-    Assertions.assertEquals("BRL", movie.getCertificate().getCountry().getCurrencyIsoCode());
-    Assertions.assertEquals("Real", movie.getCertificate().getCountry().getCurrencyName());
-    Assertions.assertEquals("R$", movie.getCertificate().getCountry().getCurrencySymbol());
-    Assertions.assertEquals("Brazil", movie.getCertificate().getCountry().getName());
-    Assertions.assertEquals("12 Anos", movie.getCertificate().getDescription());
-    Assertions.assertEquals(null, movie.getCountry());
-    Assertions.assertTrue(movie.getCreatedAt().before(Calendar.getInstance()));
-    Assertions.assertTrue(movie.getDvdRelease().before(Calendar.getInstance()));
-    Assertions.assertEquals("cinema@cinema-api.com.br", movie.getInsertUser());
-    Assertions.assertEquals("any thing", movie.getMainCommentary());
-    Assertions.assertEquals("The Matrix", movie.getOriginalTitle());
-    Assertions.assertEquals("The Matrix Overview", movie.getOverview());
-    Assertions.assertEquals(null, movie.getPoster());
-    Assertions.assertEquals(new BigDecimal(9.9), movie.getPublicRating());
-    Assertions.assertEquals(new BigDecimal(9.8), movie.getRating());
-    Assertions.assertTrue(movie.getReleaseDate().before(Calendar.getInstance()));
-    Assertions.assertTrue(movie.getUpdatedAt().before(Calendar.getInstance()));
-    Assertions.assertEquals("cinema@cinema-api.com.br", movie.getUpdateUser());
-  }
+		// Then
+		Movie movie = listMovies.get(0);
+		assertEquals(2, listMovies.size());
+		assertEquals(1999, movie.getProductionYear());
+		assertEquals(1L, movie.getId().longValue());
+		assertEquals(120, movie.getRuntime().intValue());
+		assertEquals("4:3", movie.getAspectRatio());
+		assertEquals(new BigDecimal(100), movie.getBudget());
+		assertEquals(1, movie.getCertificate().getId().intValue());
+		assertEquals("BR", movie.getCertificate().getCountry().getCode());
+		assertEquals("BRL", movie.getCertificate().getCountry().getCurrencyIsoCode());
+		assertEquals("Real", movie.getCertificate().getCountry().getCurrencyName());
+		assertEquals("R$", movie.getCertificate().getCountry().getCurrencySymbol());
+		assertEquals("Brazil", movie.getCertificate().getCountry().getName());
+		assertEquals("12 Anos", movie.getCertificate().getDescription());
+		assertEquals(null, movie.getCountry());
+		assertTrue(movie.getCreatedAt().before(Calendar.getInstance()));
+		assertTrue(movie.getDvdRelease().before(Calendar.getInstance()));
+		assertEquals("cinema@cinema-api.com.br", movie.getInsertUser());
+		assertEquals("any thing", movie.getMainCommentary());
+		assertEquals("The Matrix", movie.getOriginalTitle());
+		assertEquals("The Matrix Overview", movie.getOverview());
+		assertEquals(null, movie.getPoster());
+		assertEquals(new BigDecimal(9.9), movie.getPublicRating());
+		assertEquals(new BigDecimal(9.8), movie.getRating());
+		assertTrue(movie.getReleaseDate().before(Calendar.getInstance()));
+		assertTrue(movie.getUpdatedAt().before(Calendar.getInstance()));
+		assertEquals("cinema@cinema-api.com.br", movie.getUpdateUser());
+	}
 
-  /**
-   * Test method for
-   * {@link br.com.iwakoshi.cinemaapi.service.movie.MovieService#countMoviesComingSoon()}.
-   */
-  @Test
-  void testCountMoviesComingSoon() {
-    // Arrange
-    Mockito.when(movieService.countMoviesComingSoon())
-        .thenReturn((long) BuilderMovie.createMovies().size());
+	/**
+	 * Test method for
+	 * {@link br.com.iwakoshi.cinemaapi.service.movie.MovieService#countMoviesComingSoon()}.
+	 */
+	@Test
+	void testCountMoviesComingSoon() {
+		// Arrange
+		when(movieService.countMoviesComingSoon()).thenReturn((long) BuilderMovie.createMovies().size());
 
-    // Act
-    Long count = movieService.countMoviesComingSoon();
+		// Act
+		Long count = movieService.countMoviesComingSoon();
 
-    // Then
-    Assertions.assertEquals(2, count.longValue());
-  }
+		// Then
+		assertEquals(2, count.longValue());
+	}
 
 }

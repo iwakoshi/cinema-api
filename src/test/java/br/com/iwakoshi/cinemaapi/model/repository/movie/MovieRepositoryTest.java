@@ -13,18 +13,23 @@
 package br.com.iwakoshi.cinemaapi.model.repository.movie;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
 import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+
 import br.com.iwakoshi.cinemaapi.BuilderMovie;
-import br.com.iwakoshi.cinemaapi.MockitoExtension;
 import br.com.iwakoshi.cinemaapi.model.entity.movie.Movie;
 
 /**
@@ -36,56 +41,51 @@ import br.com.iwakoshi.cinemaapi.model.entity.movie.Movie;
 @ExtendWith(MockitoExtension.class)
 public class MovieRepositoryTest {
 
-  @Mock
-  private EntityManager em;
+	@Mock
+	private EntityManager em;
 
-  @Mock
-  private TypedQuery<Movie> typedQuery;
+	@Mock
+	private TypedQuery<Movie> typedQuery;
 
-  @Mock
-  private TypedQuery<Long> typedQueryInteger;
+	@Mock
+	private TypedQuery<Long> typedQueryInteger;
 
-  @InjectMocks
-  private MovieRepository movieRepository;
+	@InjectMocks
+	private MovieRepository movieRepository;
 
-  @Test
-  public void testGetMoviesComingSoonByPagination() {
-    // Arrange
-    Mockito.when(em.createNamedQuery(Mockito.anyString(), Mockito.<Class<Movie>>any()))
-        .thenReturn(typedQuery);
-    Mockito.when(typedQuery.setMaxResults(Mockito.anyInt())).thenReturn(typedQuery);
-    Mockito.when(typedQuery.setFirstResult(Mockito.anyInt())).thenReturn(typedQuery);
-    Mockito.when(typedQuery.setParameter(Mockito.anyString(), Mockito.any()))
-        .thenReturn(typedQuery);
-    Mockito.when(typedQuery.getResultList()).thenAnswer(new Answer<List<Movie>>() {
-      @Override
-      public List<Movie> answer(InvocationOnMock invocation) throws Throwable {
-        return BuilderMovie.createMovies();
-      }
-    });
+	@Test
+	public void testGetMoviesComingSoonByPagination() {
+		// Arrange
+		when(em.createNamedQuery(anyString(), Mockito.<Class<Movie>>any())).thenReturn(typedQuery);
+		when(typedQuery.setMaxResults(anyInt())).thenReturn(typedQuery);
+		when(typedQuery.setFirstResult(anyInt())).thenReturn(typedQuery);
+		when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+		when(typedQuery.getResultList()).thenAnswer(new Answer<List<Movie>>() {
+			@Override
+			public List<Movie> answer(InvocationOnMock invocation) throws Throwable {
+				return BuilderMovie.createMovies();
+			}
+		});
 
-    // Act
-    List<Movie> listMovies = movieRepository.getMoviesComingSoonByPagination(0, 30);
+		// Act
+		List<Movie> listMovies = movieRepository.getMoviesComingSoonByPagination(0, 30);
 
-    // Then
-    Assertions.assertEquals(2, listMovies.size());
-  }
+		// Then
+		Assertions.assertEquals(2, listMovies.size());
+	}
 
-  @Test
-  public void testCountMoviesComingSoon() {
-    // Arrange
-    Mockito.when(em.createNamedQuery(Mockito.anyString(), Mockito.<Class<Long>>any()))
-        .thenReturn(typedQueryInteger);
-    Mockito.when(typedQueryInteger.getSingleResult())
-        .thenReturn((long) BuilderMovie.createMovies().size());
-    Mockito.when(typedQueryInteger.setParameter(Mockito.anyString(), Mockito.any()))
-        .thenReturn(typedQueryInteger);
+	@Test
+	public void testCountMoviesComingSoon() {
+		// Arrange
+		when(em.createNamedQuery(anyString(), Mockito.<Class<Long>>any())).thenReturn(typedQueryInteger);
+		when(typedQueryInteger.getSingleResult()).thenReturn((long) BuilderMovie.createMovies().size());
+		when(typedQueryInteger.setParameter(anyString(), any())).thenReturn(typedQueryInteger);
 
-    // Act
-    Long count = movieRepository.countMoviesComingSoon();
+		// Act
+		Long count = movieRepository.countMoviesComingSoon();
 
-    // Then
-    Assertions.assertEquals(2, count.longValue());
-  }
+		// Then
+		Assertions.assertEquals(2, count.longValue());
+	}
 
 }

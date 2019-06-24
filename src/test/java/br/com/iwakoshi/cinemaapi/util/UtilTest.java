@@ -3,10 +3,11 @@ package br.com.iwakoshi.cinemaapi.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import br.com.iwakoshi.cinemaapi.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * @author Fabio Iwakoshi

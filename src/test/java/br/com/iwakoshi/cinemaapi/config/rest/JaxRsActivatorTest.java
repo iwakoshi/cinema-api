@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
  */
 public class JaxRsActivatorTest {
 
-  @Test
-  public void testCreateJaxRsActivator() {
-    Assertions.assertNotNull(new JaxRsActivator());
-  }
+	@Test
+	public void testCreateJaxRsActivator() {
+		Assertions.assertNotNull(new JaxRsActivator());
+	}
 
 }

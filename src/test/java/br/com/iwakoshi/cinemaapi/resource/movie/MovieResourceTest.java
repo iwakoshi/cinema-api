@@ -12,16 +12,21 @@
  */
 package br.com.iwakoshi.cinemaapi.resource.movie;
 
+import static br.com.iwakoshi.cinemaapi.BuilderMovie.createMovies;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
+
 import javax.ws.rs.core.Response;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import br.com.iwakoshi.cinemaapi.BuilderMovie;
-import br.com.iwakoshi.cinemaapi.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import br.com.iwakoshi.cinemaapi.model.entity.movie.Movie;
 import br.com.iwakoshi.cinemaapi.service.movie.MovieService;
 
@@ -32,58 +37,56 @@ import br.com.iwakoshi.cinemaapi.service.movie.MovieService;
 @ExtendWith(MockitoExtension.class)
 public class MovieResourceTest {
 
-  @Mock
-  private MovieService movieService;
+	@Mock
+	private MovieService movieService;
 
-  @InjectMocks
-  private MovieResource movieResource;
+	@InjectMocks
+	private MovieResource movieResource;
 
-  private List<Movie> movies = BuilderMovie.createMovies();
+	private List<Movie> movies = createMovies();
 
-  @Test
-  void testGetMoviesComingSoonByPaginationOnePage() {
-    // Arrange
-    Mockito.when(movieService.getMoviesComingSoonByPagination(0, 30)).thenReturn(movies);
-    Mockito.when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
+	@Test
+	void testGetMoviesComingSoonByPaginationOnePage() {
+		// Arrange
+		when(movieService.getMoviesComingSoonByPagination(0, 30)).thenReturn(movies);
+		when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
 
-    // Act
-    Response response = movieResource.getMoviesComingSoonByPagination(0, 30);
+		// Act
+		Response response = movieResource.getMoviesComingSoonByPagination(0, 30);
 
-    // Then
-    Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    Assertions.assertEquals("rows 0-2/2", response.getHeaderString("Content-Range"));
-    Assertions.assertNotNull(response.getEntity());
-  }
+		// Then
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals("rows 0-2/2", response.getHeaderString("Content-Range"));
+		assertNotNull(response.getEntity());
+	}
 
-  @Test
-  void testGetMoviesComingSoonByPaginationFisrtPage() {
-    // Arrange
-    Mockito.when(movieService.getMoviesComingSoonByPagination(0, 1))
-        .thenReturn(movies.subList(0, 1));
-    Mockito.when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
+	@Test
+	void testGetMoviesComingSoonByPaginationFisrtPage() {
+		// Arrange
+		when(movieService.getMoviesComingSoonByPagination(0, 1)).thenReturn(movies.subList(0, 1));
+		when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
 
-    // Act
-    Response response = movieResource.getMoviesComingSoonByPagination(0, 1);
+		// Act
+		Response response = movieResource.getMoviesComingSoonByPagination(0, 1);
 
-    // Then
-    Assertions.assertEquals(Response.Status.PARTIAL_CONTENT.getStatusCode(), response.getStatus());
-    Assertions.assertEquals("rows 0-1/2", response.getHeaderString("Content-Range"));
-    Assertions.assertNotNull(response.getEntity());
-  }
+		// Then
+		assertEquals(Response.Status.PARTIAL_CONTENT.getStatusCode(), response.getStatus());
+		assertEquals("rows 0-1/2", response.getHeaderString("Content-Range"));
+		assertNotNull(response.getEntity());
+	}
 
-  @Test
-  void testGetMoviesComingSoonByPaginationSecondPage() {
-    // Arrange
-    Mockito.when(movieService.getMoviesComingSoonByPagination(1, 1))
-        .thenReturn(movies.subList(1, 2));
-    Mockito.when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
+	@Test
+	void testGetMoviesComingSoonByPaginationSecondPage() {
+		// Arrange
+		when(movieService.getMoviesComingSoonByPagination(1, 1)).thenReturn(movies.subList(1, 2));
+		when(movieService.countMoviesComingSoon()).thenReturn((long) movies.size());
 
-    // Act
-    Response response = movieResource.getMoviesComingSoonByPagination(1, 1);
+		// Act
+		Response response = movieResource.getMoviesComingSoonByPagination(1, 1);
 
-    // Then
-    Assertions.assertEquals(Response.Status.PARTIAL_CONTENT.getStatusCode(), response.getStatus());
-    Assertions.assertEquals("rows 1-2/2", response.getHeaderString("Content-Range"));
-    Assertions.assertNotNull(response.getEntity());
-  }
+		// Then
+		assertEquals(Response.Status.PARTIAL_CONTENT.getStatusCode(), response.getStatus());
+		assertEquals("rows 1-2/2", response.getHeaderString("Content-Range"));
+		assertNotNull(response.getEntity());
+	}
 }
