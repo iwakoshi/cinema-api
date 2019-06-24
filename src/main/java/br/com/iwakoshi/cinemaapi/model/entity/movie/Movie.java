@@ -15,6 +15,7 @@ package br.com.iwakoshi.cinemaapi.model.entity.movie;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,52 +24,48 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 /**
  * The persistent class for the movie database table.
  * 
  */
 @Entity
-@Table(name="movie")
-@NamedQueries ({
-  @NamedQuery(name="Movie.getMoviesComingSoonByPagination", query="SELECT m FROM Movie m WHERE m.releaseDate > :today"),
-  @NamedQuery(name="Movie.countMoviesComingSoon", query="SELECT COUNT(m.id) FROM Movie m WHERE m.releaseDate > :today"),
-})
+@Table(name = "movie")
+@NamedQuery(name = "Movie.getMoviesComingSoonByPagination", query = "SELECT m FROM Movie m WHERE m.releaseDate > :today")
+@NamedQuery(name = "Movie.countMoviesComingSoon", query = "SELECT COUNT(m.id) FROM Movie m WHERE m.releaseDate > :today")
 public class Movie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="aspect_ratio", length=20)
+	@Column(name = "aspect_ratio", length = 20)
 	private String aspectRatio;
 
-	@Column(precision=15, scale=2)
+	@Column(precision = 15, scale = 2)
 	private BigDecimal budget;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at", nullable=false)
+	@Column(name = "created_at", nullable = false)
 	private Calendar createdAt;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="dvd_release")
+	@Column(name = "dvd_release")
 	private Calendar dvdRelease;
 
-	@Column(name="insert_user", nullable=false, length=50)
+	@Column(name = "insert_user", nullable = false, length = 50)
 	private String insertUser;
 
-	@Column(name="main_commentary", columnDefinition = "TEXT")
+	@Column(name = "main_commentary", columnDefinition = "TEXT")
 	private String mainCommentary;
 
-	@Column(name="original_title", nullable=false, length=300)
+	@Column(name = "original_title", nullable = false, length = 300)
 	private String originalTitle;
 
 	@Column(columnDefinition = "TEXT")
@@ -76,41 +73,41 @@ public class Movie implements Serializable {
 
 	private byte[] poster;
 
-	@Column(name="production_year", nullable=false, precision=4)
+	@Column(name = "production_year", nullable = false, precision = 4)
 	private int productionYear;
 
-	@Column(name="public_rating", precision=3, scale=1)
+	@Column(name = "public_rating", precision = 3, scale = 1)
 	private BigDecimal publicRating;
 
-	@Column(precision=3, scale=1)
+	@Column(precision = 3, scale = 1)
 	private BigDecimal rating;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="release_date")
+	@Column(name = "release_date")
 	private Calendar releaseDate;
 
-	@Column(precision=5)
+	@Column(precision = 5)
 	private Integer runtime;
 
-	@Column(name="update_user", length=50)
+	@Column(name = "update_user", length = 50)
 	private String updateUser;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Calendar updatedAt;
 
-	//bi-directional many-to-one association to Certificate
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="certificate")
+	// bi-directional many-to-one association to Certificate
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "certificate")
 	private Certificate certificate;
 
-	//bi-directional many-to-one association to Country
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="budget_currency")
+	// bi-directional many-to-one association to Country
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "budget_currency")
 	private Country country;
 
 	public Movie() {
-	  /* class body intentionally left blank */
+		/* class body intentionally left blank */
 	}
 
 	public Long getId() {

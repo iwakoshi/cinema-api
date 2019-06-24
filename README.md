@@ -17,7 +17,7 @@ Java API RESTfull Design Reference
 ## Tech
 
 #### Server
-- JBoss EAP 7.1
+- JBoss EAP 7.2 - JEE8
 
 #### Database
 - Postgresql
